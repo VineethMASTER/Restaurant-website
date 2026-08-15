@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Gilded Fork | Fine Dining</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+
+    <nav class="navbar">
+        <div class="hamburger" id="hamburger">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="logo">Gilded<span>Fork</span></div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#menu">Menu</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <a href="#modalOverlay" class="modalButton nav-btn">Book a Table</a>
+    </nav>
+
+    <header id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="logo">Exquisite<span>Dining</span> </h1>
+            <p>Experience the art of culinary perfection.</p>
+            <div style="margin-top: 20px;">
+                <a href="#menu" class="nav-btn" style="padding: 12px; font-size: large;">Explore Menu</a>
+            </div>
+        </div>
+    </header>
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-card">
+            <button class="close-modal" id="closeModal" onclick="closeModal()">&times;</button>
+            <h2>Reserve Your Table</h2>
+            <p>Please fill in the details to book your experience.</p>
+            <form id="reservationForm">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" id="name" placeholder="Full Name" required>
+                        <div class="error-text" id="nameError"></div>
+                    </div>
+                    <div class="input-group">
+                        <input type="tel" id="phone" placeholder="Phone Number" required>
+                        <div class="error-text" id="phoneError"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="date" id="resDate" required>
+                        <div class="error-text" id="resDateError"></div>
+                    </div>
+                    <div class="input-group">
+                        <input type="time" id="resTime" required>
+                        <div class="error-text" id="resTimeError"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="input-group">
+                        <select id="guests" required>
+                            <option value="" disabled selected>Number of People</option>
+                            <option value="1-2">1-2 People</option>
+                            <option value="3-4">3-4 People</option>
+                            <option value="5-6">5-6 People</option>
+                        </select>
+                        <div class="error-text" id="guestsError"></div>
+                    </div>
+                    <div class="input-group">
+                        <select id="location" required>
+                            <option value="" disabled selected>Select Location</option>
+                            <option value="Downtown">Downtown Branch</option>
+                            <option value="Uptown">Uptown Bistro</option>
+                        </select>
+                        <div class="error-text" id="locationError"></div>
+                    </div>
+                </div>
+
+                <textarea id="specialRequest" placeholder="Special Requests" rows="3"></textarea>
+                <button type="button" onclick="sendMail()" class="btn-full">Book Now</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+    <section id="about" class="section about-split">
+        <div class="about-video">
+            <video autoplay muted loop playsinline>
+                <source src="assets/about_demo_video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+
+        <div class="about-content">
+            <div class="carousel" id="aboutCarousel">
+                <div class="slide active">
+                    <h2>Our Story</h2>
+                    <p>Founded in 2010, The Gilded Fork brings farm-to-table freshness with a touch of urban elegance.
+                        Our chefs specialize in seasonal ingredients sourced from local artisans.</p>
+                </div>
+                <div class="slide">
+                    <h2>Our Passionate Staff</h2>
+                    <p>Our team is the heart of the experience. From our world-class sommeliers to our dedicated floor
+                        staff, we ensure every guest feels like royalty.</p>
+                </div>
+                <div class="slide">
+                    <h2>Fine Hospitality</h2>
+                    <p>We believe dining is more than just food; it's a memory. We focus on every detail, from the
+                        ambient lighting to the perfect table setting.</p>
+                </div>
+                <div class="slide">
+                    <h2>The Culinary Masters</h2>
+                    <p>Led by Chef Julian Vane, our kitchen combines traditional French techniques with modern molecular
+                        gastronomy to surprise your palate.</p>
+                </div>
+
+                <div class="carousel-dots">
+                    <span class="dot active" onclick="currentSlide(0)"></span>
+                    <span class="dot" onclick="currentSlide(1)"></span>
+                    <span class="dot" onclick="currentSlide(2)"></span>
+                    <span class="dot" onclick="currentSlide(3)"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="menu" class="section bg-light">
+        <h2 class="text-center " style="margin-bottom: 20px;">Our Menu</h2>
+        <p class="text-center speciality" style="margin-bottom: 15px;">Handcrafted dishes featuring seasonal ingredients
+        </p>
+
+        <!-- Category Navigation -->
+        <nav class="menu-tabs">
+            <button class="tab-btn" onclick="filterMenu('starters')">Starters</button>
+            <button class="tab-btn active" onclick="filterMenu('mains')">Mains</button>
+            <button class="tab-btn" onclick="filterMenu('desserts')">Desserts</button>
+        </nav>
+
+        <div class="menu-list" id="menu-container">
+
+            <!-- Starter Example -->
+            <div class="menu-row starters">
+                <div class="menu-main-info">
+                    <span class="dish-name">Burrata Salad</span>
+                    <span class="dish-leader"></span>
+                    <span class="dish-price">$16</span>
+                </div>
+                <div class="dish-details">
+                    <span class="speciality">Speciality: Heirloom tomatoes & aged balsamic</span>
+                    <p class="description">Creamy Italian burrata served with fresh basil and cold-pressed olive oil.
+                    </p>
+                </div>
+            </div>
+            <div class="menu-row starters">
+                <div class="menu-main-info">
+                    <span class="dish-name">Mexican Salad</span>
+                    <span class="dish-leader"></span>
+                    <span class="dish-price">$19</span>
+                </div>
+                <div class="dish-details">
+                    <span class="speciality">Speciality: Heirloom tomatoes & aged balsamic</span>
+                    <p class="description">Creamy Italian burrata served with fresh basil and cold-pressed olive oil.
+                    </p>
+                </div>
+            </div>
+            <div class="menu-row starters">
+                <div class="menu-main-info">
+                    <span class="dish-name">Italian Salad</span>
+                    <span class="dish-leader"></span>
+                    <span class="dish-price">$22</span>
+                </div>
+                <div class="dish-details">
+                    <span class="speciality">Speciality: Heirloom tomatoes & aged balsamic</span>
+                    <p class="description">Creamy Italian burrata served with fresh basil and cold-pressed olive oil.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Main Example 1 -->
+            <div class="menu-row mains">
+                <div class="menu-main-info">
+                    <span class="dish-name">Chicken Roast</span>
+                    <span class="dish-leader"></span>
+                    <span class="dish-price">$45</span>
+                </div>
+                <div class="dish-details">
+                    <span class="speciality">Speciality: Grade A5 & Truffle Mash</span>
+                    <p class="description">Butter-seared Wagyu served with a rich red wine reduction and truffle-infused
+                        potatoes.</p>
+                </div>
+            </div>
+
+            <!-- Main Example 2 -->
+            <div class="menu-row mains">
+                <div class="menu-main-info">
+                    <span class="dish-name">Sea Bass</span>
+                    <span class="dish-leader"></span>
+                    <span class="dish-price">$28</span>
+                </div>
+                <div class="dish-details">
+                    <span class="speciality">Speciality: Pan-seared with Lemon Butter</span>
+                    <p class="description">Wild-caught sea bass served over a bed of sautéed asparagus and micro-greens.
+                    </p>
+                </div>
+            </div>
+
+            <div class="menu-row mains">
+                <div class="menu-main-info">
+                    <span class="dish-name">Wagyu Beef</span>
+                    <span class="dish-leader"></span>
+                    <span class="dish-price">$45</span>
+                </div>
+                <div class="dish-details">
+                    <span class="speciality">Speciality: Grade A5 & Truffle Mash</span>
+                    <p class="description">Butter-seared Wagyu served with a rich red wine reduction and truffle-infused
+                        potatoes.</p>
+                </div>
+            </div>
+
+            <!-- Dessert Example -->
+            <div class="menu-row desserts">
+                <div class="menu-main-info">
+                    <span class="dish-name">Lava Cake</span>
+                    <span class="dish-leader"></span>
+                    <span class="dish-price">$12</span>
+                </div>
+                <div class="dish-details">
+                    <span class="speciality">Speciality: 70% Dark Belgian Chocolate</span>
+                    <p class="description">Warm chocolate cake with a molten center, served with Madagascan vanilla bean
+                        gelato.</p>
+                </div>
+            </div>
+            <div class="menu-row desserts">
+                <div class="menu-main-info">
+                    <span class="dish-name">Chocolate Cake</span>
+                    <span class="dish-leader"></span>
+                    <span class="dish-price">$12</span>
+                </div>
+                <div class="dish-details">
+                    <span class="speciality">Speciality: 90% Dark Belgian Chocolate</span>
+                    <p class="description"> chocolate cake with a molten center, served with Madagascan vanilla bean
+                        gelato.</p>
+                </div>
+            </div>
+
+            <div class="menu-row desserts">
+                <div class="menu-main-info">
+                    <span class="dish-name">Vanilla Cake</span>
+                    <span class="dish-leader"></span>
+                    <span class="dish-price">$12</span>
+                </div>
+                <div class="dish-details">
+                    <span class="speciality">Speciality: 10% Dark Belgian Chocolate</span>
+                    <p class="description"> chocolate cake with a molten center, served with Madagascan vanilla bean
+                        gelato.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="gallery" class="section">
+        <h2 class="text-center " style="margin-bottom: 20px;">Gallery</h2>
+        <p class="text-center speciality" style="margin-bottom: 15px;">A glimpse into our Restaurant</p>
+
+        <div class="carousel-container single-item-view">
+            <button class="carousel-control prev" onclick="moveCarousel(-1)">&#10094;</button>
+
+            <div class="gallery-carousel" id="carousel">
+                <!-- Item 1 -->
+                <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1200"
+                        alt="Dish 1">
+                    <p class="image-caption">Balcony View</p>
+                </div>
+                <!-- Item 3 -->
+                <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=1200"
+                        alt="Dish 3">
+                    <p class="image-caption">Signature Dessert</p>
+                </div>
+                <div class="carousel-item">
+                    <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1200"
+                        alt="Dish 1">
+                    <p class="image-caption">Balcony View</p>
+                </div>
+            </div>
+
+            <button class="carousel-control next" onclick="moveCarousel(1)">&#10095;</button>
+        </div>
+    </section>
+
+    <section id="blog" class="section bg-light">
+        <h2 class="text-center" style="margin-bottom: 20px;">Customer Feedback</h2>
+        <p class="text-center speciality" style="margin-bottom: 15px;">What our diners are saying</p>
+
+        <div class="carousel-container">
+
+
+            <!-- Controls -->
+            <div class="carousel-nav">
+                <button class="carousel-control prev" onclick="moveReviews(-1)">&#10094;</button>
+                            <div class="review-carousel" id="review-track">
+                <!-- Review 1 -->
+                <div class="review-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="feedback">"The Wagyu Beef was absolutely life-changing. The truffle mash is a must-try!"
+                    </p>
+                    <h4 class="guest-name">- James Harrington</h4>
+                </div>
+                <!-- Review 2 -->
+                <div class="review-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="feedback">"A perfect atmosphere for our anniversary. The service was impeccable."</p>
+                    <h4 class="guest-name">- Sarah Jenkins</h4>
+                </div>
+                <!-- Review 3 -->
+                <div class="review-card">
+                    <div class="stars">★★★★☆</div>
+                    <p class="feedback">"Incredible Sea Bass. The lemon butter sauce is light but so flavorful."</p>
+                    <h4 class="guest-name">- Michael Chen</h4>
+                </div>
+                <!-- Review 4 -->
+                <div class="review-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="feedback">"Best risotto I've had outside of Italy. Truly an authentic experience."</p>
+                    <h4 class="guest-name">- Elena Rodriguez</h4>
+                </div>
+                <!-- Review 5 -->
+                <div class="review-card">
+                    <div class="stars">★★★★★</div>
+                    <p class="feedback">"The chocolate lava cake is worth the visit alone. Five stars all around!"</p>
+                    <h4 class="guest-name">- David Smith</h4>
+                </div>
+                <!-- Review 6 -->
+                <div class="review-card">
+                    <div class="stars">★★★★☆</div>
+                    <p class="feedback">"Great wine selection and the staff is very knowledgeable about pairings."</p>
+                    <h4 class="guest-name">- Lisa Wong</h4>
+                </div>
+            </div>
+                <button class="carousel-control next" onclick="moveReviews(1)" >&#10095;</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section-light">
+        <div class="container">
+            <h2 class="text-center ">Contact Us</h2>
+            <div class="contact-split">
+
+                <div class="contact-info timings-block">
+                    <h3 style="margin-bottom: 10px;">Visit The Gilded Fork</h3>
+
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>123 Gourmet Ave, NY 10001</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-phone"></i>
+                        <span>+1 234 567 890</span>
+                    </div>
+
+                    <!-- Timings Block -->
+                    <div>
+                        <h3><i class="far fa-clock"></i> Opening Hours</h3>
+                        <ul class="timing-list">
+                            <li><span class="day">Mon - Thu</span> <span class="hours">11:00 AM - 10:00 PM</span></li>
+                            <li><span class="day">Fri - Sat</span> <span class="hours">11:00 AM - 11:30 PM</span></li>
+                            <li><span class="day">Sunday</span> <span class="hours">10:00 AM - 9:00 PM</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="socials">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+
+                <div class="contact-map">
+                    <!-- Map is standard color for light background -->
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.15830869428!2d-74.11976373946229!3d40.69766374874431!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY!5e0!3m2!1sen!2sus!4v1651234567890!5m2!1sen!2sus"
+                        width="100%" height="350" style="border:0; border-radius:15px;" allowfullscreen=""
+                        loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Small Footer - Deep Black -->
+    <footer class="footer-mini">
+        <p>&copy; 2026 Gilded Fork. All Rights Reserved.</p>
+    </footer>
+
+
+
+
+    <script src="script.js"></script>
+    <script src="safety.js"></script>
+</body>
+
+</html>
